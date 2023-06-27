@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react-native';
 
-import HomeScreen from '../home/index';
+import HomeScreen from '../../home/index';
 
 test('renders "Home page" text', () => {
     const { getByText } = render(<HomeScreen />);
