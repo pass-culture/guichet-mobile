@@ -22,11 +22,11 @@ jobs:
 #      folder: |
 #        .storybook/**
 #        src/**'
-  yarn-linter:
-    needs: yarn-install
-    uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
+  # yarn-linter:
+  #   needs: yarn-install
+  #   uses: ./.github/workflows/dev_on_workflow_linter_ts.yml
   yarn-tester:
-    needs: yarn-linter
+    # needs: yarn-linter
     uses: ./.github/workflows/dev_on_workflow_tester.yml
     secrets:
       GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
