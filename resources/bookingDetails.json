@@ -1,0 +1,27 @@
+[
+    {
+        "bookingId": 1,
+        "dateOfBirth": "01-01-1990",
+        "datetime": "2023-07-01T00:00:00",
+        "ean13": "9781234567890",
+        "email": "test@example.com",
+        "formula": "",
+        "isUsed": false,
+        "offerId": 1,
+        "offerName": "La guerre des étoiles",
+        "offerType": "EVENT",
+        "phoneNumber": "0601020304",
+        "price": 20,
+        "priceCategoryLabel": "MOVIE",
+        "publicOfferId": "fake123",
+        "quantity": 10,
+        "theater": {
+            "film_id": 1,
+            "salle_id": 1
+        },
+        "userName": "Anna Keen",
+        "venueAddress": "12 rue des étoiles",
+        "venueDepartmentCode": "75",
+        "venueName": "Mon super cinéma"
+    }
+]
