@@ -19,20 +19,20 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v3
-#      - uses: actions/cache@v3
-#        with:
-#          path: |
-#            node_modules
-#            ~/.cache/yarn
-#          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-#          restore-keys: |
-#            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-#      - uses: actions/cache@v3
-#        with:
-#          path: .jest/cache
-#          key: v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
-#          restore-keys: |
-#            v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.cache/yarn
+          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/cache@v3
+        with:
+          path: .jest/cache
+          key: v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
       - run: yarn run test
 #      - name: Authentification to Google
 #        uses: 'google-github-actions/auth@v1'
