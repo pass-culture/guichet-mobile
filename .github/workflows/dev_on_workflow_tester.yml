@@ -33,7 +33,7 @@ jobs:
 #          key: v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
 #          restore-keys: |
 #            v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn test:unit:ci
+      - run: yarn test
 #      - name: Authentification to Google
 #        uses: 'google-github-actions/auth@v1'
 #        with:
