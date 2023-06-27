@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react"
-import mockedBookings from "../../../resources/bookingDetails.json"
+import useTokenReaderStore from "../../hooks/useTokenReaderStore"
 import { GmButton, GmText } from "../../ui-kit"
-import { getBookingDetails } from "../../../app/index"
+import { BookingDetails } from "../BookingDetails"
 
-export default TokenReader = ({ token }) => {
-    const { token, validateToken, resetToken } = useTokenContext(token)
-
+export default TokenReader = () => {
+    const bookingDetails = false
     // if (showDefault) {
     //     return <GmText>Veuillez scanner une contremarque</GmText>
     // }
@@ -13,17 +12,17 @@ export default TokenReader = ({ token }) => {
     return bookingDetails ? (
         <>
             <BookingDetails
-                userName={bookingDetails.userName}
-                offerName={bookingDetails.offerName}
-                date={bookingDetails.datetime}
-                price={bookingDetails.price}
+                userName={"userName"}
+                offerName={"offerName"}
+                date={"datetime"}
+                price={"price"}
             />
-            <GmButton title="Valider" onPress={validateToken} />
+            <GmButton title="Valider" onPress={() => {}} />
         </>
     ) : (
         <>
             <GmText>La contremarque n'existe pas</GmText>
-            <GmButton title="Reessayer" onPress={resetToken} />
+            <GmButton title="Reessayer" onPress={() => {}} />
         </>
     )
 }
