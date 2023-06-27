@@ -1,30 +1,6 @@
-import mockedBookings from "../../resources/bookingDetails.json"
+import mockedBookings from "../../resources/bookingDetails"
 
-export const defaultBookingDetails = {
-    bookingId: 0,
-    dateOfBirth: "",
-    datetime: "",
-    ean13: "",
-    email: "",
-    formula: "",
-    isUsed: false,
-    offerId: 0,
-    offerName: "",
-    offerType: "",
-    phoneNumber: "",
-    price: 0,
-    priceCategoryLabel: "",
-    publicOfferId: "",
-    quantity: 0,
-    theater: {
-        film_id: 0,
-        salle_id: 0,
-    },
-    userName: "",
-    venueAddress: "",
-    venueDepartmentCode: "",
-    venueName: "",
-}
+export const defaultBookingDetails = null
 
 const getBookingDetails = (tokenRead) => {
     // Token non existant
@@ -32,7 +8,7 @@ const getBookingDetails = (tokenRead) => {
         return { tokenReadErrorCode: "404", bookingDetails: null }
     }
     // Token déjà validé
-    else if (token == "TKN410") {
+    else if (tokenRead == "TKN410") {
         return { tokenReadErrorCode: "410", bookingDetails: mockedBookings[0] }
     } else {
         return { tokenReadErrorCode: "200", bookingDetails: mockedBookings[0] }
