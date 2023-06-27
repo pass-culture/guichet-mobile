@@ -1,12 +1,14 @@
-import { TextInput, Text } from "react-native"
+import { GmTextInput, GmView } from "../../ui-kit/index"
+import useTokenReaderStore from "../../hooks/useTokenReaderStore"
 
 export default TokenInput = () => {
+    const { readToken, resetKey } = useTokenReaderStore()
     const onTokenChange = (e) => {
-        // setToken?.(e.nativeEvent.text)
+        readToken(e.nativeEvent.text)
     }
     return (
-        <>
-            <TextInput
+        <GmView key={resetKey}>
+            <GmTextInput
                 autoCapitalize="characters"
                 autoCorrect={false}
                 onSubmitEditing={onTokenChange}
@@ -16,6 +18,6 @@ export default TokenInput = () => {
                 returnKeyType="done"
                 maxLength={6}
             />
-        </>
+        </GmView>
     )
 }
