@@ -13,9 +13,9 @@ export const resetTokenRead = () =>
 useTokenReaderStore.setState(() => (initialStore))
 
 export const readToken = (newToken) => {
-        // if (newToken.length === 6) {
-        //     getBookingDetails(newToken)
-        // }
-    },
+    // if (newToken.length === 6) {
+    //     getBookingDetails(newToken)
+    // }
+}
 
 export default useTokenReaderStore
