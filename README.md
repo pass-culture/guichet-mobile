@@ -12,3 +12,22 @@ npx create-expo-app -e with-router
 
 - [Expo Router: Docs](https://expo.github.io/router)
 - [Expo Router: Repo](https://github.com/expo/router)
+
+## Setup
+
+```sh
+yarn add --dev @testing-library/react-native
+yarn add --dev @testing-library/jest-native
+yarn add --dev jest
+yarn add --dev @types/jest
+yarn add --dev ts-jest
+yarn add --dev @jest/globals
+````
+
+In `package.json`, add:
+```JSON
+"jest": {
+        "preset": "react-native",
+        "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"]
+},
+```
