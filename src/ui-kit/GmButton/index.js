@@ -5,7 +5,7 @@ export default GmButton = ({ title, onPress, customStyle }) => {
         <Button
             title={title}
             onPress={onPress}
-            style={{ ...styles.gmButton, customStyle }}
+            style={{ ...styles.gmButton, ...customStyle }}
         />
     )
 }
