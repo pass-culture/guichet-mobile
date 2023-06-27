@@ -1,9 +1,8 @@
 import { TextInput, Text } from "react-native"
 
-export default TokenInput = ({ setToken, onTokenChanged }) => {
-    const { token, setToken } = useToken(onTokenChanged)
+export default TokenInput = () => {
     const onTokenChange = (e) => {
-        setToken?.(e.nativeEvent.text)
+        // setToken?.(e.nativeEvent.text)
     }
     return (
         <>
@@ -16,7 +15,6 @@ export default TokenInput = ({ setToken, onTokenChanged }) => {
                 keyboardType="ascii-capable-number-pad"
                 returnKeyType="done"
                 maxLength={6}
-                value={token}
             />
         </>
     )
