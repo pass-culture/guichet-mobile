@@ -1,0 +1,143 @@
+name: Install runtime environment and dependencies
+
+on:
+  workflow_call:
+    inputs:
+      ENV:
+        type: string
+        required: true
+      TYPE:
+        type: string
+        required: true
+    secrets:
+      GCP_EHP_SERVICE_ACCOUNT:
+        required: true
+      GCP_EHP_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+
+jobs:
+  sentry_and_deploy:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Yarn install
+        run: yarn install
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Authentification to Google
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      - name: Get Secret
+        id: 'secrets'
+        uses: 'google-github-actions/get-secretmanager-secrets@v1'
+        with:
+          # TODO: add these secrets in GCP
+          secrets: |-
+            ANDROID_APPCENTER_API_TOKEN:passculture-metier-ehp/guichet-mobile-android-${{ inputs.ENV }}-token
+            ANDROID_GOOGLE_SERVICES_JSON:passculture-metier-ehp/guichet-mobile-android-google-service-json
+            ANDROID_KEYSTORE_STORE_PASSWORD:passculture-metier-ehp/guichet-mobile-android-${{ inputs.ENV }}-keystore-store-password
+            ANDROID_KEYSTORE_KEY_PASSWORD:passculture-metier-ehp/guichet-mobile-android-${{ inputs.ENV }}-keystore-key-password
+            ANDROID_KEYSTORE:passculture-metier-ehp/guichet-mobile-${{ inputs.ENV }}-keystore
+            IOS_APPCENTER_API_TOKEN:passculture-metier-ehp/guichet-mobile-ios-${{ inputs.ENV }}-token
+            SENTRY_AUTH_TOKEN:passculture-metier-ehp/guichet-mobile-sentry-token
+#      - name: 'Render Sentry Template'
+#        id: render_template
+#        uses: chuhlomin/render-template@v1.6
+#        with:
+#          template: templates_github_ci/.sentryclirc
+#          vars: |
+#            token: ${{ steps.secrets.outputs.SENTRY_AUTH_TOKEN }}
+#          result_path: .sentryclirc
+      - name: Deploy soft android for ${{ inputs.ENV }}
+        if:  ${{ inputs.TYPE == 'soft' }}
+        run: |
+          bundle exec fastlane android deploy codepush: --env ${{ inputs.ENV }}
+        env:
+          ANDROID_APPCENTER_API_TOKEN: ${{ steps.secrets.outputs.ANDROID_APPCENTER_API_TOKEN }}
+      - name: Deploy soft ios App for ${{ inputs.ENV }}
+        if:  ${{ inputs.TYPE == 'soft' }}
+        run: |
+          bundle exec fastlane ios deploy codepush: --env ${{ inputs.ENV }}
+        env:
+          IOS_APPCENTER_API_TOKEN: ${{ steps.secrets.outputs.IOS_APPCENTER_API_TOKEN }}
+      - name: Create a directory for keystores
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: |
+          mkdir --parents android/keystores/
+      - name: Setup android keystore for ${{ inputs.ENV }} environment
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: |
+          echo '${{ steps.secrets.outputs.ANDROID_KEYSTORE }}' |  base64 --decode > android/keystores/${{ inputs.ENV }}.keystore
+      - name: Setup android keystore properties for ${{ inputs.ENV }} environment
+        if: ${{ inputs.TYPE == 'hard'}}
+        uses: chuhlomin/render-template@v1.6
+        with:
+          template: templates_github_ci/${{ inputs.ENV }}.keystore.properties
+          vars: |
+            ENVIRONMENT: ${{ inputs.ENV }}
+            ANDROID_KEYSTORE_STORE_PASSWORD: ${{ steps.secrets.outputs.ANDROID_KEYSTORE_STORE_PASSWORD }}
+            ANDROID_KEYSTORE_KEY_PASSWORD: ${{ steps.secrets.outputs.ANDROID_KEYSTORE_KEY_PASSWORD }}
+          result_path: android/keystores/${{ inputs.ENV }}.keystore.properties
+      - name: Setup android Google services config
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: echo '${{ steps.secrets.outputs.ANDROID_GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+      - name: Deploy hard android for ${{ inputs.ENV }}
+        if: ${{ inputs.TYPE == 'hard'}}
+        run: |
+          bundle exec fastlane android deploy --env ${{ inputs.ENV }} --verbose
+        env:
+          ANDROID_APPCENTER_API_TOKEN: ${{ steps.secrets.outputs.ANDROID_APPCENTER_API_TOKEN }}
+  slack_notify:
+    runs-on: [self-hosted, linux, x64]
+    if: ${{ always() && github.ref == 'refs/heads/main' }}
+    needs: sentry_and_deploy
+    steps:
+      - name: Connect to Secret Manager
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      - name: Get secrets for Slack
+        id: 'slack_secrets'
+        uses: 'google-github-actions/get-secretmanager-secrets@v1'
+        with:
+          secrets: |-
+            SLACK_BOT_TOKEN:passculture-metier-ehp/passculture-app-native-slack-token
+      - uses: technote-space/workflow-conclusion-action@v3
+        if: ${{ always() }}
+      - name: Post to a Slack channel
+        id: slack
+        if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          # temp channel for the hackathon team
+          channel-id: 'C05DUKDL5NK'
+          payload: |
+            {
+              "attachments": [
+                  {
+                      "mrkdwn_in": ["text"],
+                      "color": "${{ fromJSON('["#36a64f", "#A30002"]')[ env.WORKFLOW_CONCLUSION == 'failure'] }}",
+                      "author_name": "${{github.actor}}",
+                      "author_link": "https://github.com/${{github.actor}}",
+                      "author_icon": "https://github.com/${{github.actor}}.png",
+                      "title": "Déploiement du Guichet mobile",
+                      "title_link": "https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}",
+                      "text": "Le déploiement sur `${{ inputs.ENV }}` a échoué :boom:"
+                  }
+              ],
+              "unfurl_links": false,
+              "unfurl_media": false
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ steps.slack_secrets.output.SLACK_BOT_TOKEN }}
