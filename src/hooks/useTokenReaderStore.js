@@ -45,6 +45,10 @@ const useTokenReaderStore = create((set, get) => ({
             })
         }
     },
+    readTokenFromQr: (newToken) => {
+        get().readToken(newToken)
+        set({ resetKey: -1, tokenRead: newToken })
+    },
     toValidate: () => {
         get().resetTokenRead()
     },
