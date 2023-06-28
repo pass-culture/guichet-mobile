@@ -23,7 +23,7 @@ export default function Login() {
                 <GmView style={styles.loginInfosWrapper}>
                     <GmText style={styles.description}>Bienvenue sur le guichet mobile du pass Culture.</GmText>
                     <GmTextInput label="Email" placeholder="email@example.com" displayLetterCount={false}/>
-                    <GmTextInput label="Mot de passe" displayLetterCount={false}/>
+                    <GmTextInput secureTextEntry={true} label="Mot de passe" displayLetterCount={false}/>
                     <GmButton title="Se connecter" onPress={() => router.push('/home')}/>
                 </GmView>
             </BottomSheet>
