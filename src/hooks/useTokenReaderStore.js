@@ -2,6 +2,7 @@ import { create } from "zustand"
 import getBookingDetails, {
     defaultBookingDetails,
 } from "../api/getBookingDetails"
+import Toast from "react-native-root-toast"
 
 const initialStore = {
     resetKey: 0,
@@ -9,6 +10,16 @@ const initialStore = {
     tokenReadErrorCode: 0,
     bookingDetails: defaultBookingDetails,
     currentDrawerIndex: 0,
+}
+
+const MyToast = (text, duration = Toast.durations.SHORT) => {
+    Toast.show(text, {
+        backgroundColor: "#15884F",
+        textColor: "white",
+        opacity: 0.9,
+        duration: duration,
+        position: 100,
+    })
 }
 
 const useTokenReaderStore = create((set, get) => ({
@@ -53,9 +64,11 @@ const useTokenReaderStore = create((set, get) => ({
     toValidate: () => {
         get().resetTokenRead()
         get().setCurrentIndex(0)
+        MyToast("La contremarque a bien été validée", Toast.durations.LONG)
     },
     toInvalidate: () => {
         get().resetTokenRead()
+        MyToast("La contremarque a bien été invalidée")
     },
     toRetry: () => {
         get().resetTokenRead()
