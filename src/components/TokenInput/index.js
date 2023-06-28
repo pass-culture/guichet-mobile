@@ -10,6 +10,7 @@ export default TokenInput = () => {
         <GmView key={resetKey}>
             <GmTextInput
                 autoCapitalize="characters"
+                label="Contremarque"
                 autoCorrect={false}
                 onSubmitEditing={onTokenChange}
                 placeholder="ex : ABC123"
