@@ -1,6 +1,12 @@
 import { Text, View, StyleSheet } from "react-native"
 
-export default BookingDetails = ({ userName, offerName, date, price }) => {
+export default BookingDetails = ({
+    userName,
+    offerName,
+    date,
+    price,
+    venueName,
+}) => {
     return (
         <View style={styles.bookingDetailsWrapper}>
             <View style={styles.bookingDetailsRow}>
@@ -19,6 +25,11 @@ export default BookingDetails = ({ userName, offerName, date, price }) => {
             <View style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Prix : </Text>
                 <Text style={styles.bookingDetailsValue}>{price}</Text>
+            </View>
+
+            <View style={styles.bookingDetailsRow}>
+                <Text style={styles.bookingDetailsLabel}>Lieu : </Text>
+                <Text style={styles.bookingDetailsValue}>{venueName}</Text>
             </View>
         </View>
     )
