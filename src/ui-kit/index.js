@@ -3,5 +3,5 @@ export { default as GmText } from "./GmText/index"
 export { default as GmTextInput } from "./GmTextInput/index"
 export { default as GmView } from "./GmView/index"
 
-export const drawerHeight = 300
+export const drawerHeight = 150
 export const drawerBorderRadius = 16

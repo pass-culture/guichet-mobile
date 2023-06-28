@@ -8,6 +8,7 @@ const initialStore = {
     tokenRead: "",
     tokenReadErrorCode: 0,
     bookingDetails: defaultBookingDetails,
+    currentDrawerIndex: 0,
 }
 
 const useTokenReaderStore = create((set, get) => ({
@@ -52,6 +53,9 @@ const useTokenReaderStore = create((set, get) => ({
     },
     toRetry: () => {
         get().resetTokenRead()
+    },
+    setCurrentIndex: (newIndex) => {
+        set({ currentDrawerIndex: newIndex })
     },
 }))
 
