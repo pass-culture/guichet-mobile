@@ -17,7 +17,7 @@
         "@gorhom/bottom-sheet": "^4",
         "@types/jest": "^29.5.2",
         "@types/react": "~18.0.27",
-        "expo": "^48.0.7",
+        "expo": "~48.0.18",
         "expo-barcode-scanner": "~12.3.2",
         "expo-constants": "~14.2.1",
         "expo-linking": "~4.0.1",

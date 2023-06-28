@@ -13,6 +13,12 @@
                   "cameraPermission": "Autoriser $(PRODUCT_NAME) à accéder à la caméra pour scanner les QR Codes."
               }
           ]
-      ]
+      ],
+      "android": {
+      "package": "pro.passculture.guichetmobile"
+      },
+      "ios": {
+      "bundleIdentifier": "pro.passculture.guichetmobile"
+    }
   }
 }
