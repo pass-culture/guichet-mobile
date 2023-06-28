@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native"
 
-export default GmView = ({ children, customStyle }) => {
+export default GmView = ({ children, style: customStyle }) => {
     return <View style={{ ...styles.gmView, ...customStyle }}>{children}</View>
 }
 
