@@ -1,11 +1,13 @@
 import { GmButton, GmText, GmTextInput, GmView } from "../src/ui-kit"
 import { Image, StyleSheet } from "react-native"
 import { LinearGradient } from 'expo-linear-gradient';
-import { useMemo } from "react"
+import {  useMemo } from "react"
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useRouter } from "expo-router";
+import { useState } from "react";
 
 export default function Login() {
+    const [index, setIndex] = useState(0);
     const snapPoints = useMemo(() => ['50%', '100%'], []);
     const router = useRouter();
     return (
@@ -19,11 +21,11 @@ export default function Login() {
                 <GmText style={styles.logoTitle}>Guichet</GmText>
                 <Image source={require("../assets/logo.png")} />
             </GmView>
-            <BottomSheet snapPoints={snapPoints} index={0} >
+            <BottomSheet snapPoints={snapPoints} index={index} >
                 <GmView style={styles.loginInfosWrapper}>
                     <GmText style={styles.description}>Bienvenue sur le guichet mobile du pass Culture.</GmText>
-                    <GmTextInput label="Email" placeholder="email@example.com" displayLetterCount={false}/>
-                    <GmTextInput secureTextEntry={true} label="Mot de passe" displayLetterCount={false}/>
+                    <GmTextInput label="Email" placeholder="email@example.com" displayLetterCount={false} onFocus={() => setIndex(1)}/>
+                    <GmTextInput secureTextEntry={true} label="Mot de passe" displayLetterCount={false} onFocus={() => setIndex(1)}/>
                     <GmButton title="Se connecter" onPress={() => router.push('/home')}/>
                 </GmView>
             </BottomSheet>
