@@ -1,10 +1,18 @@
 {
   "expo": {
-    "scheme": "acme",
-    "web": {
-      "bundler": "metro"
-    },
-    "name": "guichet-mobile",
-    "slug": "guichet-mobile"
+      "scheme": "acme",
+      "web": {
+          "bundler": "metro"
+      },
+      "name": "guichet-mobile",
+      "slug": "guichet-mobile",
+      "plugins": [
+          [
+              "expo-barcode-scanner",
+              {
+                  "cameraPermission": "Autoriser $(PRODUCT_NAME) à accéder à la caméra pour scanner les QR Codes."
+              }
+          ]
+      ]
   }
 }
