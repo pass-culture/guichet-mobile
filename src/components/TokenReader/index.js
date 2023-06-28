@@ -5,7 +5,8 @@ import { GmButton, GmText, GmTextInput, GmView } from "../../ui-kit"
 import BookingDetails from "../BookingDetails"
 import { shallow } from "zustand/shallow"
 import GmBanner from "../../ui-kit/GmBanner"
-
+import { format }  from "date-fns"
+import { fr } from 'date-fns/locale'
 export default TokenReader = () => {
     // Object pick, re-renders the component when either state.nuts or state.honey change
     const {
@@ -18,12 +19,12 @@ export default TokenReader = () => {
         toInvalidate,
         toRetry,
     } = useTokenReaderStore()
-
+    const dateNow = format(new Date(), "dd/MM/yyyy à HH:mm", { locale: fr })
     if (isTokenExist()) {
         if (isTokenAlreadyScanned()) {
             return (
                 <GmView style={styles.gmDetailsContainer}>
-                    <GmBanner children={ "Cette contremarque a déjà été validée le 27/06/23 à 14:42. En l'invalidant, vous indiquez qu'elle n'a pas été utilisée et vous ne serez pas remboursé" } />
+                    <GmBanner children={ `Cette contremarque a déjà été validée le ${dateNow}. En l'invalidant, vous indiquez qu'elle n'a pas été utilisée et vous ne serez pas remboursé` } />
                     <BookingDetails
                         userName={bookingDetails.userName}
                         offerName={bookingDetails.offerName}
