@@ -39,18 +39,18 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "flex-start",
         gap: 8,
-        alignSelf: "stretch", 
+        alignSelf: "stretch",
     },
     gmTextInputLabelContainer: {
         display: "flex",
         alignItems: "flex-start",
         gap: 8,
-        alignSelf: "stretch"
+        alignSelf: "stretch",
     },
     gmTextInputLabel: {
         fontSize: 15,
         lineHeight: 20,
-        color: "#161617"
+        color: "#161617",
     },
     gmTextInputContainer: {
         display: "flex",
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingRight: 16,
         paddingLeft: 16,
-        alignSelf: "stretch", 
+        alignSelf: "stretch",
         borderRadius: 30,
         borderColor: "#90949D",
         borderWidth: 1,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         lineHeight: 20,
         color: "#696A6F",
-        fontStyle: "italic"
+        fontStyle: "italic",
     },
     gmTextInput: {
         display: "flex",
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "flex-end",
         gap: 8,
-        color: "#696A6F",
         color: "#696A6F",
         textAlign: "right",
         fontSize: 12,
