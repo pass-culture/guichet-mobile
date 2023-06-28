@@ -35,7 +35,7 @@ export default TokenReader = () => {
                     date={bookingDetails.datetime}
                     price={bookingDetails.price}
                 />
-                <GmButton title="Invalider" onPress={toInvalidate} />
+                <GmButton title="Invalider" onPress={toInvalidate} variant="SECONDARY"/>
             </>
         )
     }
@@ -48,7 +48,7 @@ export default TokenReader = () => {
                 date={bookingDetails.datetime}
                 price={bookingDetails.price}
             />
-            <GmButton title="Valider" onPress={toValidate} />
+            <GmButton title="Valider la contremarque" onPress={toValidate} />
         </>
     ) : (
         <>
