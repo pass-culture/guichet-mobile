@@ -17,43 +17,43 @@ export default TokenReader = () => {
         toRetry,
     } = useTokenReaderStore()
 
-    if (!isTokenExist()) {
-        return (
-            <>
-                <GmText>Veuillez scanner une contremarque</GmText>
-            </>
-        )
-    }
+    if (isTokenExist()) {
+        if (isTokenAlreadyScanned()) {
+            return (
+                <>
+                    <GmText>Déjà validé</GmText>
+                    <BookingDetails
+                        userName={bookingDetails.userName}
+                        offerName={bookingDetails.offerName}
+                        date={bookingDetails.datetime}
+                        price={bookingDetails.price}
+                        venueName={bookingDetails.venueName}
+                    />
+                    <GmButton title="Invalider" onPress={toInvalidate} />
+                </>
+            )
+        }
 
-    if (isTokenAlreadyScanned()) {
-        return (
+        return isTokenValid() ? (
             <>
-                <GmText>Déjà validé</GmText>
                 <BookingDetails
                     userName={bookingDetails.userName}
                     offerName={bookingDetails.offerName}
                     date={bookingDetails.datetime}
                     price={bookingDetails.price}
+                    venueName={bookingDetails.venueName}
                 />
-                <GmButton title="Invalider" onPress={toInvalidate} variant="SECONDARY"/>
+                <GmButton
+                    title="Valider la contremarque"
+                    onPress={toValidate}
+                />
+            </>
+        ) : (
+            <>
+                <GmText>La contremarque n'existe pas</GmText>
+                <GmButton title="Reessayer" onPress={toRetry} />
             </>
         )
     }
 
-    return isTokenValid() ? (
-        <>
-            <BookingDetails
-                userName={bookingDetails.userName}
-                offerName={bookingDetails.offerName}
-                date={bookingDetails.datetime}
-                price={bookingDetails.price}
-            />
-            <GmButton title="Valider la contremarque" onPress={toValidate} />
-        </>
-    ) : (
-        <>
-            <GmText>La contremarque n'existe pas</GmText>
-            <GmButton title="Reessayer" onPress={toRetry} />
-        </>
-    )
 }
