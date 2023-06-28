@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Text, TextInput, StyleSheet, View } from "react-native"
 
-export default GmTextInput = ({ style: customStyle, ...props }) => {
+export default GmTextInput = ({ style: customStyle, displayLetterCount = true, ...props }) => {
     const [textCount, setTextCount] = useState(0)
     const inputStyle = textCount == 0 ? styles.gmPlaceholder : styles.gmTextInput
     return (
@@ -18,9 +18,11 @@ export default GmTextInput = ({ style: customStyle, ...props }) => {
                     />
                 </GmView>
             </GmView>
-            <GmView style={{ ...styles.gmErrorsAndCharactersContainer, ...customStyle }}>
-                <Text style={{ ...styles.gmErrorsAndCharacters, ...customStyle }}>{textCount}/6</Text>
-            </GmView>
+            {displayLetterCount && (
+                <GmView style={{ ...styles.gmErrorsAndCharactersContainer, ...customStyle }}>
+                    <Text style={{ ...styles.gmErrorsAndCharacters, ...customStyle }}>{textCount}/6</Text>
+                </GmView>
+            )}
         </GmView>
     )
 }
