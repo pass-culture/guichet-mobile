@@ -6,7 +6,16 @@
       },
       "name": "guichet-mobile",
       "slug": "guichet-mobile",
+      "ios": {
+          "requireFullScreen": true
+      },
       "plugins": [
+          [
+              "expo-screen-orientation",
+              {
+                  "initialOrientation": "PORTRAIT_UP"
+              }
+          ],
           [
               "expo-barcode-scanner",
               {

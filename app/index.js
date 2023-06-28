@@ -6,8 +6,10 @@ import {
     drawerHeight,
 } from "../src/ui-kit/index"
 import { QrCode, TokenInput, TokenReader } from "../src/components"
+import * as ScreenOrientation from "expo-screen-orientation"
 
 export default function Home() {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
     return (
         <>
             <GmView style={styles.qrCodeWrapper}>
