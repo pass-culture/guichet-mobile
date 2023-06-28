@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native"
+import { useMemo, useCallback } from 'react'
+import { Dimensions, StyleSheet } from "react-native"
 import {
     GmText,
     GmGmView,
@@ -6,19 +7,26 @@ import {
     drawerHeight,
 } from "../src/ui-kit/index"
 import { QrCode, TokenInput, TokenReader } from "../src/components"
+import useTokenReaderStore from "../src/hooks/useTokenReaderStore"
+import BottomSheet from '@gorhom/bottom-sheet';
 
 export default function Home() {
+    const snapPoints = useMemo(() => [drawerHeight, '100%'], []);
+    const { currentDrawerIndex, setCurrentIndex } = useTokenReaderStore()
+    const handleSheetChanges = useCallback((newIndex) => {
+        setCurrentIndex(newIndex)
+      }, []);
     return (
         <>
             <GmView style={styles.qrCodeWrapper}>
                 <QrCode style={styles.qrCodeWrapper} />
             </GmView>
-            <GmView style={styles.wrapper}>
-                <GmView style={styles.drawer}>
+            <BottomSheet style={styles.drawer(currentDrawerIndex == 1 ? 0 : drawerBorderRadius)} snapPoints={snapPoints} index={currentDrawerIndex} onChange={handleSheetChanges}>
+                <GmView style={styles.wrapper}>
                     <TokenInput />
                     <TokenReader />
                 </GmView>
-            </GmView>
+            </BottomSheet>
         </>
     )
 }
@@ -33,18 +41,14 @@ const styles = StyleSheet.create({
         flex: 1,
         zIndex: 1,
     },
-    drawer: {
-        position: "absolute",
-        bottom: 0,
-        left: 0,
+    drawer: (borderRadius) => ({
         width: "100%",
-        height: drawerHeight,
         backgroundColor: "white",
-        borderTopLeftRadius: drawerBorderRadius,
-        borderTopRightRadius: drawerBorderRadius,
+        borderTopLeftRadius: borderRadius,
+        borderTopRightRadius: borderRadius,
         paddingTop: drawerBorderRadius,
         paddingHorizontal: drawerBorderRadius,
-    },
+    }),
     qrCodeWrapper: {
         width: "100%",
         height: "100%",
