@@ -8,36 +8,37 @@ export default BookingDetails = ({
     venueName,
 }) => {
     return (
-        <View style={styles.bookingDetailsWrapper}>
-            <View style={styles.bookingDetailsRow}>
+        <GmView style={styles.bookingDetailsWrapper}>
+            <GmView style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Utilisateur : </Text>
                 <Text style={styles.bookingDetailsValue}>{userName}</Text>
-            </View>
-            <View style={styles.bookingDetailsRow}>
+            </GmView>
+            <GmView style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Offre : </Text>
                 <Text style={styles.bookingDetailsValue}>{offerName}</Text>
-            </View>
-            <View style={styles.bookingDetailsRow}>
+            </GmView>
+            <GmView style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Date de l'offre : </Text>
                 <Text style={styles.bookingDetailsValue}>{date}</Text>
-            </View>
+            </GmView>
             
-            <View style={styles.bookingDetailsRow}>
+            <GmView style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Prix : </Text>
                 <Text style={styles.bookingDetailsValue}>{price}</Text>
-            </View>
+            </GmView>
 
-            <View style={styles.bookingDetailsRow}>
+            <GmView style={styles.bookingDetailsRow}>
                 <Text style={styles.bookingDetailsLabel}>Lieu : </Text>
                 <Text style={styles.bookingDetailsValue}>{venueName}</Text>
-            </View>
-        </View>
+            </GmView>
+        </GmView>
     )
 }
 
 const styles = StyleSheet.create({
     bookingDetailsWrapper: {
         borderRadius: 8,
+        backgroundColor: "#FFFFFF",
         shadowColor: "#25026c",
         shadowOffset: {width: 0, height: 2},
         shadowRadius: 16,
