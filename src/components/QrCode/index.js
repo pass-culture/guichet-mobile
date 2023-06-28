@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react"
-import { GmText, GmView, GmButton } from "../../ui-kit/index"
+import {
+    GmText,
+    GmView,
+    GmButton,
+    drawerHeight,
+    drawerBorderRadius,
+} from "../../ui-kit/index"
 import { StyleSheet } from "react-native"
 import { BarCodeScanner } from "expo-barcode-scanner"
 import useTokenReaderStore from "../../hooks/useTokenReaderStore"
@@ -8,6 +14,7 @@ export default QrCode = () => {
     const [hasPermission, setHasPermission] = useState(null)
     const [scanned, setScanned] = useState(false)
     const { readToken } = useTokenReaderStore()
+    let overlayMessage = "Veuiller scanner une contremarque"
 
     useEffect(() => {
         const getBarCodeScannerPermissions = async () => {
@@ -24,10 +31,10 @@ export default QrCode = () => {
     }
 
     if (hasPermission === null) {
-        return <GmText>Requesting for camera permission</GmText>
+        overlayMessage = "Demande de permissions d'accès à la caméra"
     }
     if (hasPermission === false) {
-        return <GmText>No access to camera</GmText>
+        overlayMessage = "Accès à la caméra refusé !"
     }
 
     return (
@@ -37,16 +44,30 @@ export default QrCode = () => {
                 style={StyleSheet.absoluteFillObject}
             />
             <GmView style={styles.overlay}>
-                <GmText style={styles.overlayText}>
-                    Veuiller scanner une contremarque
-                </GmText>
+                <GmText style={styles.overlayText}>{overlayMessage}</GmText>
             </GmView>
         </GmView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: { width: "100%", height: 200, backgroundColor: "grey" },
-    overlay: { position: "absolute", top: 0, left: 0 },
-    overlayText: { color: "white" },
+    container: {
+        backgroundColor: "black",
+        flex: 1,
+        marginBottom: drawerHeight - drawerBorderRadius,
+    },
+    overlay: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "99%",
+        justifyContent: "flex-end",
+        zIndex: 1,
+    },
+    overlayText: {
+        color: "white",
+        textAlign: "center",
+        paddingVertical: drawerBorderRadius,
+    },
 })
