@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
+import { StyleSheet } from "react-native"
 import useTokenReaderStore from "../../hooks/useTokenReaderStore"
-import { GmButton, GmText } from "../../ui-kit"
+import { GmButton, GmText, GmTextInput, GmView } from "../../ui-kit"
 import BookingDetails from "../BookingDetails"
 import { shallow } from "zustand/shallow"
 
@@ -20,8 +21,8 @@ export default TokenReader = () => {
     if (isTokenExist()) {
         if (isTokenAlreadyScanned()) {
             return (
-                <>
-                    <GmText>Déjà validé</GmText>
+                <GmView style={styles.gmDetailsContainer}>
+                    <GmText children={ "Cette contremarque a déjà été validée le 27/06/23 à 14:42. En l'invalidant, vous indiquez qu'elle n'a pas été utilisée et vous ne serez pas remboursé" } />
                     <BookingDetails
                         userName={bookingDetails.userName}
                         offerName={bookingDetails.offerName}
@@ -29,13 +30,13 @@ export default TokenReader = () => {
                         price={bookingDetails.price}
                         venueName={bookingDetails.venueName}
                     />
-                    <GmButton title="Invalider" onPress={toInvalidate} />
-                </>
+                    <GmButton title="Invalider la contremarque" onPress={toInvalidate} variant="SECONDARY" />
+                </GmView>
             )
         }
 
         return isTokenValid() ? (
-            <>
+            <GmView style={styles.gmDetailsContainer}>
                 <BookingDetails
                     userName={bookingDetails.userName}
                     offerName={bookingDetails.offerName}
@@ -47,13 +48,23 @@ export default TokenReader = () => {
                     title="Valider la contremarque"
                     onPress={toValidate}
                 />
-            </>
+                <GmText children={ "N'oubliez pas de vérifier l'identité du bénéficiaire avant de valider la contremarque"} />
+            </GmView>
         ) : (
-            <>
+            <GmView style={styles.gmDetailsContainer}>
                 <GmText>La contremarque n'existe pas</GmText>
-                <GmButton title="Reessayer" onPress={toRetry} />
-            </>
+                <GmButton title="Réessayer" onPress={toRetry} />
+            </GmView>
         )
     }
 
 }
+
+const styles = StyleSheet.create({
+    gmDetailsContainer: {
+        gap: 16,
+        alignItems: "center",
+        flex: 1,
+        marginTop: 16,
+    },
+})

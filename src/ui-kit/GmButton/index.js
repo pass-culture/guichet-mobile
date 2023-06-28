@@ -1,11 +1,11 @@
 import { Text, Pressable, StyleSheet } from "react-native"
 
-export default GmButton = ({ title, onPress, customStyle, variant='PRIMARY' }) => {
+export default GmButton = ({ title, onPress, style: customStyle, variant='PRIMARY' }) => {
     const variantStyle = variant === 'PRIMARY' ? styles.gmButtonPrimary : styles.gmButtonSecondary
     const variantTextStyle = variant === 'PRIMARY' ? styles.gmButtonTextPrimary : styles.gmButtonTextSecondary
     return (
         <Pressable onPress={onPress} style={{ ...styles.gmButton, ...customStyle, ...variantStyle }}>
-            <Text style={{...styles.gmButtonText, ...variantTextStyle}}>{title}</Text>
+            <Text style={{...styles.gmButtonText, ...customStyle, ...variantTextStyle}}>{title}</Text>
         </Pressable>
     )
 }
@@ -17,12 +17,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 10,
-        backgroundColor:"#EB0055",
         paddingVertical: 10,
         paddingHorizontal: 24,
         borderRadius: 30,
         height: 40,
-        width: 238,
     },
     gmButtonPrimary: {
         backgroundColor:"#EB0055",
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
     },
     gmButtonText: {
         fontSize: 15,
-        lineHeight: 20,
+        lineHeight: 18,
         fontWeight: 700,
         display: "flex",
         alignItems: "center",
