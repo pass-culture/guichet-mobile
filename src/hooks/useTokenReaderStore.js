@@ -51,7 +51,7 @@ const useTokenReaderStore = create((set, get) => ({
         get().resetTokenRead()
     },
     toRetry: () => {
-        get().readToken(get().tokenRead)
+        get().resetTokenRead()
     },
 }))
 
