@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
         shadowOpacity: 0.15,
         padding: 16,
+        width: "100%",
     },
     bookingDetailsRow: {
         display: "flex",
