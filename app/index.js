@@ -15,7 +15,6 @@ export default function Home() {
             </GmView>
             <GmView style={styles.wrapper}>
                 <GmView style={styles.drawer}>
-                    <GmText>Contremarque</GmText>
                     <TokenInput />
                     <TokenReader />
                 </GmView>
