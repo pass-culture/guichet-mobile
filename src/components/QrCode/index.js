@@ -13,7 +13,8 @@ import useTokenReaderStore from "../../hooks/useTokenReaderStore"
 export default QrCode = () => {
     const [hasPermission, setHasPermission] = useState(null)
     const [scanned, setScanned] = useState(false)
-    const { readToken, isTokenValid, isTokenExist } = useTokenReaderStore()
+    const { readTokenFromQr, isTokenValid, isTokenExist } =
+        useTokenReaderStore()
     let overlayMessage = "Veuiller scanner une contremarque"
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export default QrCode = () => {
     }, [])
 
     const handleBarCodeScanned = ({ type, data }) => {
-        readToken(data)
+        readTokenFromQr(data)
         setScanned(false)
     }
 
