@@ -4,6 +4,7 @@ import useTokenReaderStore from "../../hooks/useTokenReaderStore"
 import { GmButton, GmText, GmTextInput, GmView } from "../../ui-kit"
 import BookingDetails from "../BookingDetails"
 import { shallow } from "zustand/shallow"
+import GmBanner from "../../ui-kit/GmBanner"
 
 export default TokenReader = () => {
     // Object pick, re-renders the component when either state.nuts or state.honey change
@@ -22,7 +23,7 @@ export default TokenReader = () => {
         if (isTokenAlreadyScanned()) {
             return (
                 <GmView style={styles.gmDetailsContainer}>
-                    <GmText children={ "Cette contremarque a déjà été validée le 27/06/23 à 14:42. En l'invalidant, vous indiquez qu'elle n'a pas été utilisée et vous ne serez pas remboursé" } />
+                    <GmBanner children={ "Cette contremarque a déjà été validée le 27/06/23 à 14:42. En l'invalidant, vous indiquez qu'elle n'a pas été utilisée et vous ne serez pas remboursé" } />
                     <BookingDetails
                         userName={bookingDetails.userName}
                         offerName={bookingDetails.offerName}
@@ -30,7 +31,7 @@ export default TokenReader = () => {
                         price={bookingDetails.price}
                         venueName={bookingDetails.venueName}
                     />
-                    <GmButton title="Invalider la contremarque" onPress={toInvalidate} variant="SECONDARY" />
+                    <GmButton title="Invalider la contremarque" onPress={toInvalidate} variant="SECONDARY" style={styles.ctaButton}/>
                 </GmView>
             )
         }
@@ -48,7 +49,7 @@ export default TokenReader = () => {
                     title="Valider la contremarque"
                     onPress={toValidate}
                 />
-                <GmText children={ "N'oubliez pas de vérifier l'identité du bénéficiaire avant de valider la contremarque"} />
+                <GmBanner children={ "N'oubliez pas de vérifier l'identité du bénéficiaire avant de valider la contremarque"} type='A SAVOIR' />
             </GmView>
         ) : (
             <GmView style={styles.gmDetailsContainer}>
