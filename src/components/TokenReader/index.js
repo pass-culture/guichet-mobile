@@ -45,11 +45,16 @@ export default TokenReader = () => {
                     price={bookingDetails.price}
                     venueName={bookingDetails.venueName}
                 />
+                <GmBanner
+                    children={
+                        "N'oubliez pas de vérifier l'identité du bénéficiaire avant de valider la contremarque"
+                    }
+                    type="A SAVOIR"
+                />
                 <GmButton
                     title="Valider la contremarque"
                     onPress={toValidate}
                 />
-                <GmBanner children={ "N'oubliez pas de vérifier l'identité du bénéficiaire avant de valider la contremarque"} type='A SAVOIR' />
             </GmView>
         ) : (
             <GmView style={styles.gmDetailsContainer}>
