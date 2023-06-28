@@ -13,7 +13,7 @@ import useTokenReaderStore from "../../hooks/useTokenReaderStore"
 export default QrCode = () => {
     const [hasPermission, setHasPermission] = useState(null)
     const [scanned, setScanned] = useState(false)
-    const { readToken } = useTokenReaderStore()
+    const { readToken, isTokenValid, isTokenExist } = useTokenReaderStore()
     let overlayMessage = "Veuiller scanner une contremarque"
 
     useEffect(() => {
@@ -39,10 +39,14 @@ export default QrCode = () => {
 
     return (
         <GmView style={styles.container}>
-            <BarCodeScanner
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={StyleSheet.absoluteFillObject}
-            />
+            {!isTokenValid() && (
+                <BarCodeScanner
+                    onBarCodeScanned={
+                        scanned ? undefined : handleBarCodeScanned
+                    }
+                    style={StyleSheet.absoluteFillObject}
+                />
+            )}
             <GmView style={styles.overlay}>
                 <GmText style={styles.overlayText}>{overlayMessage}</GmText>
             </GmView>
