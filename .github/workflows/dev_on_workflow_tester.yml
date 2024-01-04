@@ -1,4 +1,4 @@
-name: Tester yaml
+name: "Tester yaml"
 
 on:
   workflow_call:
@@ -16,46 +16,56 @@ env:
   JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
 jobs:
   yarn_test_native:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - name: "OpenID Connect Authentication"
+        uses: 'google-github-actions/auth@v1'
+        with:
+          cleanup_credentials: false
+          workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+      - name: "Cache the node_modules"
+        uses: pass-culture-github-actions/cache@v1.0.0
         with:
           path: |
             node_modules
             ~/.cache/yarn
-          key: v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
+          key: v1-yarn-dependency-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            v1-yarn-dependency-cache-${{ hashFiles('**/yarn.lock') }}
-      - uses: actions/cache@v3
+            v1-yarn-dependency-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: "Jest cache"
+        uses: pass-culture-github-actions/cache@v1.0.0
         with:
           path: .jest/cache
-          key: v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
+          key: v1-yarn-test-native-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            v1-yarn-test-native-cache-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn run test
+            v1-yarn-test-native-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: "Run unit tests"
+        run: yarn run test
 
-  slack_notify:
-    runs-on: [self-hosted, linux, x64]
+  slack-notify:
+    runs-on: ubuntu-latest
     if: ${{ always() && github.ref == 'refs/heads/main' }}
-    needs:
-      - yarn_test_native
+    needs: yarn_test_native
     steps:
-      - name: Connect to Secret Manager
+      - name: "OpenID Connect Authentication"
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
-      - name: Get secrets for Slack
-        id: 'slack_secrets'
+      - name: "Get secrets"
+        id: 'secrets'
         uses: 'google-github-actions/get-secretmanager-secrets@v1'
         # FIXME: use another Slack token ?
         with:
           secrets: |-
             SLACK_BOT_TOKEN:passculture-metier-ehp/passculture-app-native-slack-token
       - uses: technote-space/workflow-conclusion-action@v3
-        if: ${{ always() }}
-      - name: Post to a Slack channel
+        if: always()
+      - name: "Post to a Slack channel"
         id: slack
         if: ${{ env.WORKFLOW_CONCLUSION == 'failure' }}
         uses: slackapi/slack-github-action@v1.23.0
@@ -65,19 +75,19 @@ jobs:
           payload: |
             {
               "attachments": [
-                  {
-                      "mrkdwn_in": ["text"],
-                      "color": "${{ fromJSON('["#36a64f", "#A30002"]')[ env.WORKFLOW_CONCLUSION == 'failure'] }}",
-                      "author_name": "${{github.actor}}",
-                      "author_link": "https://github.com/${{github.actor}}",
-                      "author_icon": "https://github.com/${{github.actor}}.png",
-                      "title": "Test du Guichet mobile",
-                      "title_link": "https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}",
-                      "text": "Les tests sur main ont échoué :boom:"
-                  }
+                {
+                  "mrkdwn_in": ["text"],
+                  "color": "${{ fromJSON('["#36a64f", "#A30002"]')[env.WORKFLOW_CONCLUSION == 'failure'] }}",
+                  "author_name": "${{github.actor}}",
+                  "author_link": "https://github.com/${{github.actor}}",
+                  "author_icon": "https://github.com/${{github.actor}}.png",
+                  "title": "Test du Guichet mobile",
+                  "title_link": "https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}",
+                  "text": "Les tests sur main ont échoué :boom:"
+                }
               ],
               "unfurl_links": false,
               "unfurl_media": false
             }
         env:
-          SLACK_BOT_TOKEN: ${{ steps.slack_secrets.output.SLACK_BOT_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ steps.secrets.output.SLACK_BOT_TOKEN }}
