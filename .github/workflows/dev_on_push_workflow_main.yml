@@ -1,4 +1,4 @@
-name: Initiate workflow
+name: "Initiate workflow"
 
 on:
   push:
@@ -9,8 +9,13 @@ permissions:
 
 jobs:
   yarn-install:
+    name: "Install dependencies"
     uses: ./.github/workflows/dev_on_workflow_install.yml
+    secrets:
+      GCP_EHP_SERVICE_ACCOUNT: ${{ secrets.GCP_EHP_SERVICE_ACCOUNT }}
+      GCP_EHP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_EHP_WORKLOAD_IDENTITY_PROVIDER }}
   yarn-tester:
+    name: "Run unit tests"
     needs: yarn-install
     uses: ./.github/workflows/dev_on_workflow_tester.yml
     secrets:
